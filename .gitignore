@@ -20,3 +20,4 @@ build
 SolutionInfo.cs
 UpgradeLog.htm
 .paket/paket.exe
+*.xml

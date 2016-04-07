@@ -60,16 +60,16 @@ Target "Build" (fun _ ->
 Target "Debug" (fun _ -> ()) //do nothing, just an entry point
 
 Target "UnitTests" (fun _ ->
-    !! "**/bin/Debug/*.dll"
+    !! "**/bin/Debug/PaketContribRepro.dll"
     |> NUnit (fun p ->
         let param =
             { p with
                 DisableShadowCopy = true
-                ToolPath = ".\\packages\\NUnit.ConsoleRunner\\tools"
-                ToolName = "nunit3-console.exe"
-                TimeOut = TimeSpan.FromMinutes 20.
-                Framework = "4.5"
-                Domain = NUnitDomainModel.MultipleDomainModel
+          //      ToolPath = ".\\packages\\NUnit.ConsoleRunner\\tools"
+            //    ToolName = "nunit3-console.exe"
+              //  TimeOut = TimeSpan.FromMinutes 20.
+            //    Framework = "4.5"
+            //    Domain = NUnitDomainModel.MultipleDomainModel
                 OutputFile = "TestResults.xml" }
         param)
 )
