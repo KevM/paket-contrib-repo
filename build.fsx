@@ -53,26 +53,30 @@ Target "Clean" (fun _ ->
 Target "Build" (fun _ ->
   MSBuild "" "Build" [
     "Configuration", buildMode
-    "ProductVersion", 1.0.0.0] [solutionFile]
+    "ProductVersion", "1.0.0.0"] [solutionFile]
     |> Log (buildMode + "-Output: ")
 )
 
-Target "Test" (fun _ ->
+Target "Debug" (fun _ -> ()) //do nothing, just an entry point
+
+Target "UnitTests" (fun _ ->
+    !! "**/bin/Debug/*.dll"
+    |> NUnit (fun p ->
+        let param =
+            { p with
+                DisableShadowCopy = true
+                ToolPath = ".\\packages\\NUnit.ConsoleRunner\\tools"
+                ToolName = "nunit3-console.exe"
+                TimeOut = TimeSpan.FromMinutes 20.
+                Framework = "4.5"
+                Domain = NUnitDomainModel.MultipleDomainModel
+                OutputFile = "TestResults.xml" }
+        param)
 )
 
-Target "Debug" (fun _ -> ()) //do nothing, just an entry point
-Target "Release" (fun _ -> ()) //do nothing, just an entry point
-
-// Dependencies
-"ConfigureRelease" ==> "Release"
-
 "Clean"
-  ==> "SetVersions"
   ==> "Build"
-  ==> "Test"
-  ==> "CopyToDeploy"
-  ==> "Finish"
-  ==> "Release"
+  ==> "UnitTests"
 
 // start build
-RunTargetOrDefault "Debug"
+RunTargetOrDefault "UnitTests"
