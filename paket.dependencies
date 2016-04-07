@@ -1,0 +1,4 @@
+source https://nuget.org/api/v2
+source https://tabbedout.artifactoryonline.com/tabbedout/api/nuget/nuget-local username: "%ARTIFACTORY_USERNAME%" password: "%ARTIFACTORY_PASSWORD%"
+
+nuget FAKE
